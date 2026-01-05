@@ -72,54 +72,57 @@ const App = () => {
     });
   }, []);
 
-  const generateId = () => {
-    if (persons.length == 0) return "1";
-    const maxID = Math.max(...persons.map((p) => Number(p.id)));
-    return String(maxID + 1);
-  };
-
   const addName = (event) => {
     event.preventDefault();
 
     const found = persons.find(
-      (person) => person.name.toLowerCase() === newName
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
     );
+
+    const newObj = {
+      name: newName,
+      number: newNumber,
+    };
 
     if (found) {
       if (
         confirm(
-          `${newName} is already added to phonebook, replace the old number with a new one?`
+          `${found.name} is already added to phonebook, replace the old number with a new one?`
         )
       ) {
-        const changedPerson = { ...found, number: newNumber };
         personService
-          .update(found.id, changedPerson)
+          .update(found.id, newObj)
           .then((updated) => {
             setPersons(persons.map((p) => (p.id !== found.id ? p : updated)));
             showNotification(`Updated ${updated.name}'s number`);
             setNewName("");
             setNewNumber("");
           })
-          .catch(() => {
-            showNotification(
-              `Information of ${newName} has already been removed from server`,
-              "error"
-            );
-            setPersons(persons.filter((person) => person.id !== found.id));
+          .catch((error) => {
+            const errorMessage =
+              error.response?.data?.error ||
+              `Information of ${newName} has already been removed from server`;
+
+            showNotification(errorMessage, "error");
+
+            if (error.response?.status === 404) {
+              setPersons(persons.filter((person) => person.id !== found.id));
+            }
           });
       }
     } else {
-      const newObj = {
-        name: newName,
-        number: newNumber,
-        id: generateId(),
-      };
-      personService.create(newObj).then((created) => {
-        setPersons(persons.concat(created));
-        showNotification(`Added ${created.name}'s number`);
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .create(newObj)
+        .then((created) => {
+          setPersons(persons.concat(created));
+          showNotification(`Added ${created.name}`);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+          showNotification(error.response.data.error, "error");
+        });
     }
   };
   const handleNewName = (event) => {

@@ -16,10 +16,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    noteService.getAll().then((response) => {
-      setNotes(response.data);
+    noteService.getAll().then((respon) => {
+      console.log(respon);
+      setNotes(respon);
     });
   }, []);
+
   console.log("render", notes.length, "notes");
 
   const addNote = (event) => {
@@ -27,14 +29,12 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random() > 0.5,
-      id: String(notes.length + 1),
     };
 
-    noteService.create(noteObject).then((response) => {
-      setNotes(notes.concat(response.data));
+    noteService.create(noteObject).then((respon) => {
+      setNotes(notes.concat(respon));
       setNewNote("");
     });
-   
   };
 
   const handleNoteChange = (event) => {
@@ -52,9 +52,9 @@ const App = () => {
         </button>
       </div>
       <ul>
-        {notesToShow.map((note) => (
+        {notesToShow.map((note, index) => (
           <Note
-            key={note.id}
+            key={index}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
           />
