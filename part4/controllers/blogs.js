@@ -34,6 +34,7 @@ blogsRouter.post("/",userExtractor, async (request, response) => {
     response.status(400).end();
   } else {
     const result = await blog.save();
+    await result.populate("user");
     user.blogs = user.blogs.concat(result._id);
     await user.save();
     response.status(201).json(result);
