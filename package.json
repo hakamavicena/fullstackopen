@@ -12,6 +12,11 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.5"
+    "@types/node": "^25.0.5",
+    "deep-freeze": "^0.0.1",
+    "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "redux": "^5.0.1"
   }
 }
