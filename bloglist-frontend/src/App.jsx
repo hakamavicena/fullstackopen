@@ -13,7 +13,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [messageType, setMessageType] = useState("");
+  const [messageType, setMessageType] = useState('')
 
   const blogFormRef = useRef()
 
@@ -43,7 +43,7 @@ const App = () => {
       setPassword('')
     } catch {
       setErrorMessage('wrong credentials')
-      setMessageType("error");
+      setMessageType('error')
       setTimeout(() => {
         setErrorMessage(null)
         setMessageType('')
@@ -87,7 +87,7 @@ const App = () => {
       setErrorMessage(
         `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
       )
-      setMessageType("success");
+      setMessageType('success')
       setTimeout(() => {
         setErrorMessage(null)
         setMessageType('')
@@ -142,7 +142,7 @@ const App = () => {
       setErrorMessage(`Deleted ${blog.title}`)
       setMessageType('success')
       setTimeout(() => {
-        setErrorMessage(null) 
+        setErrorMessage(null)
         setMessageType('')}, 5000)
     } catch (error) {
       setErrorMessage(
