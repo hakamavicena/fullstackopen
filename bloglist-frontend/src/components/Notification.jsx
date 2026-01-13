@@ -1,10 +1,13 @@
-export default function Notification({ message, type }) {
-  if (message === null) {
+import {useSelector} from 'react-redux'
+
+export default function Notification() {
+  const desc = useSelector(state => state.notification)
+  if (desc === null) {
     return null
   }
 
   const style = {
-    color: type === 'error' ? 'red' : 'green',
+    color: desc.type === 'error' ? 'red' : 'green',
     background: 'lightgrey',
     fontSize: 20,
     borderStyle: 'solid',
@@ -13,5 +16,9 @@ export default function Notification({ message, type }) {
     marginBottom: 10,
   }
 
-  return <div className={type} style={style}>{message}</div>
+  return (
+    <div className={desc.type} style={style}>
+      {desc.message}
+    </div>
+  )
 }
