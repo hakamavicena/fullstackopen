@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, addLike, deleteBlog, user }) => {
   const blogStyle = {
@@ -13,18 +14,11 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
   const text = hide ? 'view' : 'hide'
 
   const handleLike = () => {
-    const updatedBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-      user: blog.user.id,
-    }
-    addLike(blog.id, updatedBlog)
+    addLike(blog.id, blog)
   }
 
   const handleDelete = () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog)
-    }
+    deleteBlog(blog)
   }
 
   const isCreator = user && blog.user && user.username === blog.user.username
@@ -32,7 +26,9 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
   return (
     <div style={blogStyle} className="blog">
       <div>
-        {blog.title} {blog.author}
+        <Link to={`/blogs/${blog.id}`}>
+          {blog.title} {blog.author}
+        </Link>
       </div>
       <button onClick={() => setHide(!hide)}>{text}</button>
 

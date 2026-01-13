@@ -9,7 +9,7 @@ const setToken = (newToken) => {
 const getAll = () => {
   const config = token ? { headers: { Authorization: token } } : {}
   const request = axios.get(baseUrl, config)
-  return request.then(response => response.data)
+  return request.then((response) => response.data)
 }
 
 const create = async (newObject) => {
@@ -21,14 +21,19 @@ const create = async (newObject) => {
   return response.data
 }
 
+const createComment = async (id, content) => {
+  const response = await axios.post(`${baseUrl}/${id}/comments`, { content })
+  return response.data
+}
+
 const update = (id, newObject) => {
   const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then((response) => response.data)
 }
 
 const deleteOne = (id) => {
-  const config ={ headers:{ Authorization:token } }
-  const request = axios.delete(`${baseUrl}/${id}`,config)
+  const config = { headers: { Authorization: token } }
+  const request = axios.delete(`${baseUrl}/${id}`, config)
   return request.then((response) => response.data)
 }
-export default { getAll, setToken,create, update,deleteOne }
+export default { getAll, setToken, create, update, deleteOne , createComment}
